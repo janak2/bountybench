@@ -1,4 +1,4 @@
 [submodule "bountytasks"]
 	path = bountytasks
 	url = https://github.com/janak2/bountytasks.git
-	branch = whiterabbitneo
+	branch = sglang-self-hosted-model
