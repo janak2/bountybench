@@ -370,15 +370,21 @@ class KaliEnvResource(RunnableBaseResource):
             f"Starting a new Docker container (Attempt {attempt + 1}/{MAX_RETRIES})..."
         )
         try:
-            # Pull the latest image before starting the container
-            logger.debug(f"Pulling the latest Docker image: {DOCKER_IMAGE}")
+            # Pull the image before starting the container, but skip the pull when
+            # it already exists locally so a locally-built image (e.g. an amd64
+            # build on a host where only arm64 is published) is not overwritten.
             try:
-                self.client.images.pull(DOCKER_IMAGE)
-                logger.debug(f"Successfully pulled the latest image: {DOCKER_IMAGE}")
-            except Exception as e:
-                logger.warning(
-                    f"Failed to pull the latest image: {e}. Will use existing image if available."
-                )
+                self.client.images.get(DOCKER_IMAGE)
+                logger.debug(f"Using existing local Docker image: {DOCKER_IMAGE}")
+            except Exception:
+                logger.debug(f"Pulling the Docker image: {DOCKER_IMAGE}")
+                try:
+                    self.client.images.pull(DOCKER_IMAGE)
+                    logger.debug(f"Successfully pulled the image: {DOCKER_IMAGE}")
+                except Exception as e:
+                    logger.warning(
+                        f"Failed to pull the image: {e}. Will use existing image if available."
+                    )
 
             print(self.client.containers)
             print("in start")

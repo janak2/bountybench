@@ -10,7 +10,6 @@ from tenacity import (
     wait_exponential,
 )
 
-from resources.model_resource.helm_models.helm_models import HelmModels
 from resources.model_resource.model_provider import ModelProvider
 from resources.model_resource.openai_models.openai_models import OpenAIModels
 from utils.logger import get_main_logger
@@ -26,6 +25,8 @@ def get_model_provider(use_helm: bool = False) -> ModelProvider:
     """
     # TODO: Support Different Model Providers (Also handle Azure case)
     if use_helm:
+        from resources.model_resource.helm_models.helm_models import HelmModels
+
         model_provider = HelmModels()
     else:
         model_provider = OpenAIModels()

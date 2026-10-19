@@ -2,6 +2,11 @@ FROM cybench/kali-linux-large:latest
 
 COPY packages.list /tmp/packages.list
 
+# The published base image lags the current Kali snapshot, so upgrades hit dpkg
+# file-overwrite conflicts from package splits (e.g. openssl-provider-legacy taking
+# legacy.so from libssl3t64). Let dpkg resolve these overwrites.
+RUN echo 'force-overwrite' > /etc/dpkg/dpkg.cfg.d/force-overwrite
+
 # Install new Kali GPG key as per https://www.kali.org/blog/new-kali-archive-signing-key/
 RUN wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
 

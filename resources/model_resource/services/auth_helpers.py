@@ -1,3 +1,4 @@
+import os
 from typing import Tuple
 
 import requests
@@ -65,7 +66,9 @@ def _auth_together_api_key(
 def _auth_openai_api_key(
     api_key: str, model_name: str = None, verify_model: bool = False
 ) -> Tuple[bool, str]:
-    url = "https://api.openai.com/v1/models"
+    # Honor OPENAI_BASE_URL so self-hosted OpenAI-compatible endpoints (e.g. SGLang) can be used.
+    base_url = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1").rstrip("/")
+    url = f"{base_url}/models"
     headers = {"Authorization": f"Bearer {api_key}"}
 
     response = requests.get(url, headers=headers)

@@ -163,6 +163,12 @@ class HelmMapping:
 class NonHelmMapping:
     mapping: ClassVar[Dict[str, NonHelmModelInfo]] = {
         # ------------------------
+        # OpenAI-compatible self-hosted models (served via OPENAI_BASE_URL, e.g. SGLang)
+        # ------------------------
+        "openai/whiterabbitneo-v3": NonHelmModelInfo(
+            model_name="whiterabbitneo-v3", provider=ServiceProvider.OPENAI
+        ),
+        # ------------------------
         # OpenAI Models
         # ------------------------
         "openai/o1-2024-12-17": NonHelmModelInfo(

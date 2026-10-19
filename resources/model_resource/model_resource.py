@@ -12,7 +12,6 @@ from resources.model_resource.anthropic_models.anthropic_models import (
     DEFAULT_THINKING_BUDGET,
     EXTENDED_THINKING_SUFFIX,
 )
-from resources.model_resource.helm_models.helm_models import HelmModels
 from resources.model_resource.model_provider import ModelProvider
 from resources.model_resource.model_utils import truncate_input_to_max_tokens
 from resources.model_resource.services.api_key_service import verify_and_auth_api_key
@@ -130,6 +129,8 @@ class ModelResource(RunnableBaseResource):
         if self.use_mock_model:
             return None
         if self.helm:
+            from resources.model_resource.helm_models.helm_models import HelmModels
+
             model_provider = HelmModels()
         else:
             # Select provider based on model name prefix

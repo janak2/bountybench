@@ -1,3 +1,4 @@
 [submodule "bountytasks"]
 	path = bountytasks
-	url = https://github.com/bountybench/bountytasks.git
+	url = https://github.com/janak2/bountytasks.git
+	branch = whiterabbitneo
